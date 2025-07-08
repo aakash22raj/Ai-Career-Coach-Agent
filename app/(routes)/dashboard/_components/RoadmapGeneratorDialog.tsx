@@ -59,8 +59,8 @@ function RoadmapGeneratorDialog({openDialog, setOpenDialog}: any) {
       // console.log('💪 Roadmap generation started:', result.data);
 
       if (result.data) {
-        router.push(`/ai-tools/ai-roadmap-agent/${roadmapId}`)
         setOpenDialog(false);
+        router.push(`/ai-tools/ai-roadmap-agent/${roadmapId}`)
       } else {
         throw new Error("No data received from server");
       }

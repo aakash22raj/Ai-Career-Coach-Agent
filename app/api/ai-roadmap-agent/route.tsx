@@ -1,4 +1,5 @@
 import { inngest } from "@/inngest/client";
+import { getRuns } from "@/lib/inngest-utils";
 import { currentUser } from "@clerk/nextjs/server";
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
@@ -7,7 +8,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
     try{
-      console.log("📥 API called");
+      // console.log("📥 API called");
 
       const {roadmapId, userInput} = await req.json();
       const user = await currentUser();
@@ -24,7 +25,7 @@ export async function POST(req: NextRequest) {
       
       // Return runId
       const runId = resultIds?.ids?.[0];
-      console.log("🆔 Inngest run ID:", runId)
+      // console.log("🆔 Inngest run ID:", runId)
   
   
       let runStatus;
@@ -36,7 +37,7 @@ export async function POST(req: NextRequest) {
 
         // call the getRuns for getting the return status
         runStatus = await getRuns(runId);
-        console.log("📊 Run status:", runStatus?.data);
+        // console.log("📊 Run status:", runStatus?.data);
   
 
         if (Array.isArray(runStatus?.data) && runStatus.data[0]?.status === "Completed") {
@@ -78,7 +79,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(responseData);
   
     } catch (err: any) {
-      console.error("❌ API Error:", err);
+      // console.error("❌ API Error:", err);
       return NextResponse.json(
         {error: err.message || 'Server Error' }, 
         { status: 500 }
@@ -86,19 +87,3 @@ export async function POST(req: NextRequest) {
     }
 }
 
-    
-export async function getRuns(runId: string) {
-    const url = `${process.env.INNGEST_SERVER_HOST}/v1/events/${runId}/runs`
-    try {
-      const result = await axios.get(url, {
-        headers: {
-          Authorization: `Bearer ${process.env.INNGEST_SIGNING_KEY}`,
-        },
-      });
-
-      return result.data;
-    } catch (error) {
-      console.error("❌ Failed to get run status from Inngest:", error);
-      return null;
-    }
-}

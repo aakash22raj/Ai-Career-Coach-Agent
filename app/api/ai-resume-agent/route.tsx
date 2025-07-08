@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { WebPDFLoader } from '@langchain/community/document_loaders/web/pdf'
 import { inngest } from "@/inngest/client";
+import { getRuns } from "@/lib/inngest-utils";
 import axios from "axios";
 import { currentUser } from "@clerk/nextjs/server";
 
@@ -8,7 +9,7 @@ import { currentUser } from "@clerk/nextjs/server";
 
 export async function POST(req: NextRequest) {
     try {
-        console.log("📥 API called");
+        // console.log("📥 API called");
 
         const FormData = await req.formData();
         const resumeFile: any = FormData.get('resumeFile');
@@ -22,7 +23,7 @@ export async function POST(req: NextRequest) {
 
         const loader = new WebPDFLoader(resumeFile);
         const docs = await loader.load();
-        console.log("📄 PDF text:", docs[0])  //Raw Pdf Text
+        // console.log("📄 PDF text:", docs[0])  //Raw Pdf Text
     
         const arrayBuffer = await resumeFile.arrayBuffer();
         const base64 = Buffer.from(arrayBuffer).toString('base64');
@@ -41,7 +42,7 @@ export async function POST(req: NextRequest) {
         });
     
         const runId = resultIds?.ids?.[0];
-        console.log("🆔 Inngest run ID:", runId)
+        // console.log("🆔 Inngest run ID:", runId)
         
         let runStatus;
         let attempts = 0;
@@ -97,20 +98,3 @@ export async function POST(req: NextRequest) {
 }
 
 
-export async function getRuns(runId: string) {
-    console.log()
-  const url = `${process.env.INNGEST_SERVER_HOST}/v1/events/${runId}/runs`;
-
-  try {
-    const result = await axios.get(url, {
-      headers: {
-        Authorization: `Bearer ${process.env.INNGEST_SIGNING_KEY}`,
-      },
-    });
-
-    return result.data;
-  } catch (error) {
-    console.error("❌ Failed to get run status from Inngest:", error);
-    return null;
-  }
-}

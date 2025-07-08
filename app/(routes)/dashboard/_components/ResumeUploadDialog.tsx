@@ -67,16 +67,12 @@ const ResumeUploadDialog = ({openResumeUpload, setOpenResumeDialog}: any) => {
         // console.log("📤 Uploading resume...");
         try {
           const result = await axios.post("/api/ai-resume-agent", formData);
-          // console.log("✅ Resume uploaded:", result.data);
-
-          // setLoading(false);
-          // console.log("🚀 Redirecting to: /ai-tools/ai-resume-analyzer/" + recordId);
            if(result.data) {
             // console.log("✅ Resume uploaded:", result.data);
             
             // first redirect then Close dialog
-            router.push(`/ai-tools/ai-resume-analyzer/${recordId}`);
             setOpenResumeDialog(false);
+            router.push(`/ai-tools/ai-resume-analyzer/${recordId}`);
           } else {
             throw new Error("No data received from server");
           }
