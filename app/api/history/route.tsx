@@ -71,7 +71,8 @@ export async function GET(req:any) {
         else {
             const result = await db.select()
                 .from(HistoryTable)
-                .where(eq(HistoryTable.userEmail, user?.primaryEmailAddress?.emailAddress))
+                .where(eq(HistoryTable.userEmail, user?.primaryEmailAddress?.emailAddress as string))
+                // .where(eq(HistoryTable.userEmail, String(user?.primaryEmailAddress?.emailAddress)))
                 .orderBy(desc(HistoryTable.createdAt)); 
             return NextResponse.json(result)
         }
