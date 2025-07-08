@@ -113,7 +113,7 @@ function Report({aiReport}: any) {
 
         {/* Section Rating */}
         <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mb-6'>
-            {['contact_info', 'experience', 'education', 'skills'].map((sectionKey) => {
+            {(['contact_info', 'experience', 'education', 'skills'] as const).map((sectionKey) => {
 
                 const section = aiReport?.section?.[sectionKey];
                 const score = section?.score || 0;
