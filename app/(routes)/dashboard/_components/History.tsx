@@ -21,7 +21,7 @@ const History = () => {
     const GetHistory = async() => {
       setLoading(true);
       const result = await axios.get('/api/history');
-      console.log(result.data);
+      // console.log(result.data);
       setUserHistory(result.data);
       setLoading(false);
     }
@@ -64,7 +64,7 @@ const History = () => {
               >
                 <div className='flex gap-3 sm:gap-5 items-center mb-2 sm:mb-0'>
                   <Image 
-                    src={GetAgentName(history?.aiAgentType)?.icon} 
+                    src={GetAgentName(history?.aiAgentType)?.icon as string} 
                     alt={'image'}
                     width={20}
                     height={20} 
