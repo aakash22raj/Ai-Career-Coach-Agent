@@ -119,9 +119,9 @@ export const AiRoadMapAgent = inngest.createFunction(
 
 
 var imagekit = new ImageKit({
-    publicKey : process.env.IMAGEKIT_PUBLIC_KEY,
-    privateKey : process.env.IMAGEKIT_PRIVATE_KEY,
-    urlEndpoint : process.env.IMAGEKIT_ENDPOINT_UR 
+    publicKey : process.env.IMAGEKIT_PUBLIC_KEY!,
+    privateKey : process.env.IMAGEKIT_PRIVATE_KEY!,
+    urlEndpoint : process.env.IMAGEKIT_ENDPOINT_UR! 
 });
 
 export const AiResumeAnalyzerAgent = createAgent({
